@@ -1,0 +1,102 @@
+/* === Base Styles === */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f6f8fb;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+}
+
+/* === Layout === */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+#notes {
+  grid-column: 1 / -1; /* Span full width */
+}
+
+/* === Columns === */
+.column {
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.column h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.card-container {
+  min-height: 200px;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* === Cards === */
+.card {
+  background: #fffbe6;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 5px;
+  cursor: move;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  transition: transform 0.15s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.card span {
+  display: inline-block;
+  width: 80%;
+}
+
+.card span:focus {
+  outline: none;
+  background-color: #fffacd;
+}
+
+/* === Delete Button === */
+.delete-btn {
+  float: right;
+  border: none;
+  background: none;
+  color: red;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* === Header + Logo === */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 36px;
+  object-fit: contain;
+}
