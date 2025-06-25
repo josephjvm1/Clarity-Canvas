@@ -1,30 +1,30 @@
-import { useEffect, useState } from 'react'
-import { supabase } from './src/supabaseClient'
-import Auth from './src/Auth'
-import Canvas from './src/Canvas' // Update this if you named it differently
+import { useState, useEffect } from 'react';
+import { supabase } from './supabaseClient';
+import Auth from './Auth';
+import Canvas from './Canvas'; // or whatever your main app file is called
 
-function App() {
-  const [session, setSession] = useState(null)
+export default function App() {
+  const [session, setSession] = useState(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+    // Check for existing session on load
+    const currentSession = supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
+    // Listen for auth changes
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
 
-    return () => subscription.unsubscribe()
-  }, [])
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <div>
-      {session ? <Canvas key={session.user.id} /> : <Auth />}
+      {!session ? <Auth /> : <Canvas />}
     </div>
-  )
+  );
 }
-
-export default App
