@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
-import Auth from './Auth';
-import Canvas from './Canvas'; // ✅ Double check this path!
+import { useState, useEffect } from 'react'
+import { supabase } from './supabaseClient'
+import Auth from './Auth'
+import Canvas from './Canvas' // <-- this is your existing board component
 
 export default function App() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
+      setSession(session)
+    })
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+      setSession(session)
+    })
 
     return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+      listener.subscription.unsubscribe()
+    }
+  }, [])
 
   return (
     <div>
       {!session ? <Auth /> : <Canvas />}
     </div>
-  );
+  )
 }
