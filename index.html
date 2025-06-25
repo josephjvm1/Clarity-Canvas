@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clarity Canvas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <img src="logo.png" alt="Simplicity Blueprint Logo" class="logo" />
+    <h1>Clarity Canvas</h1>
+  </header>
+
+  <div class="board">
+    <div class="column" id="brain-dump">
+      <h2>Brain Dump</h2>
+      <div class="card-container" id="dump-cards"></div>
+      <button onclick="addCard('dump-cards')">+ Add</button>
+    </div>
+    <div class="column" id="todo">
+      <h2>To-Do</h2>
+      <div class="card-container" id="todo-cards"></div>
+      <button onclick="addCard('todo-cards')">+ Add</button>
+    </div>
+    <div class="column" id="goals">
+      <h2>Goals</h2>
+      <div class="card-container" id="goal-cards"></div>
+      <button onclick="addCard('goal-cards')">+ Add</button>
+    </div>
+    <div class="column" id="notes">
+      <h2>Notes</h2>
+      <div class="card-container" id="note-cards"></div>
+      <button onclick="addCard('note-cards')">+ Add</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
