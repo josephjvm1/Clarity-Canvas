@@ -1,53 +1,41 @@
-import { useState } from 'react'
-import { supabase } from './supabaseClient'
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 
-export default function Auth() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
-  const handleSignIn = async () => {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    })
-    if (error) alert(error.message)
-    setLoading(false)
-  }
+export default function Auth({ onLogin }) {
+  const [session, setSession] = useState(null);
 
-  const handleSignUp = async () => {
-    setLoading(true)
-    const { error } = await supabase.auth.signUp({
-      email,
-      password
-    })
-    if (error) alert(error.message)
-    else alert('Check your email to confirm sign up.')
-    setLoading(false)
-  }
+  useEffect(() => {
+    const currentSession = supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      if (data.session) onLogin(data.session.user);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, newSession) => {
+        setSession(newSession);
+        if (newSession) onLogin(newSession.user);
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({ provider: "google" });
+  };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '100px auto', textAlign: 'center' }}>
-      <h2>Login to Clarity Canvas</h2>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ padding: '8px', margin: '8px', width: '100%' }}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ padding: '8px', margin: '8px', width: '100%' }}
-      />
-      <div>
-        <button onClick={handleSignIn} disabled={loading}>Log In</button>
-        <button onClick={handleSignUp} disabled={loading} style={{ marginLeft: '10px' }}>Sign Up</button>
-      </div>
+    <div style={{ textAlign: "center", marginTop: "5rem" }}>
+      <h1>Clarity Canvas</h1>
+      <p>A space to organize your thoughts.</p>
+      <button onClick={signInWithGoogle}>Sign in with Google</button>
     </div>
-  )
+  );
 }
